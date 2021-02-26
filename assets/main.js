@@ -25,6 +25,7 @@
 					['edge',		/Edge\/([0-9\.]+)/],
 					['safari',		/Version\/([0-9\.]+).+Safari/],
 					['chrome',		/Chrome\/([0-9\.]+)/],
+					['chrome',		/CriOS\/([0-9\.]+)/],
 					['ie',			/Trident\/.+rv:([0-9]+)/]
 				];
 	
@@ -172,6 +173,10 @@
 				&&	!h.match(/^[a-zA-Z]/))
 					h = 'x' + h;
 	
+			// Convert to lowercase.
+				if (typeof h == 'string')
+					h = h.toLowerCase();
+	
 			return h;
 	
 		},
@@ -286,6 +291,116 @@
 			// Scroll to top.
 				scrollToElement(null);
 	
+		},
+		loadElements = function(parent) {
+	
+			var a, e, x, i;
+	
+			// IFRAMEs.
+	
+				// Get list of unloaded IFRAMEs.
+					a = parent.querySelectorAll('iframe[data-src]:not([data-src=""])');
+	
+				// Step through list.
+					for (i=0; i < a.length; i++) {
+	
+						// Load.
+							a[i].src = a[i].dataset.src;
+	
+						// Mark as loaded.
+							a[i].dataset.src = "";
+	
+					}
+	
+			// Video.
+	
+				// Get list of videos (autoplay).
+					a = parent.querySelectorAll('video[autoplay]');
+	
+				// Step through list.
+					for (i=0; i < a.length; i++) {
+	
+						// Play if paused.
+							if (a[i].paused)
+								a[i].play();
+	
+					}
+	
+			// Autofocus.
+	
+				// Get first element with data-autofocus attribute.
+					e = parent.querySelector('[data-autofocus="1"]');
+	
+				// Determine type.
+					x = e ? e.tagName : null;
+	
+					switch (x) {
+	
+						case 'FORM':
+	
+							// Get first input.
+								e = e.querySelector('.field input, .field select, .field textarea');
+	
+							// Found? Focus.
+								if (e)
+									e.focus();
+	
+							break;
+	
+						default:
+							break;
+	
+					}
+	
+		},
+		unloadElements = function(parent) {
+	
+			var a, e, x, i;
+	
+			// IFRAMEs.
+	
+				// Get list of loaded IFRAMEs.
+					a = parent.querySelectorAll('iframe[data-src=""]');
+	
+				// Step through list.
+					for (i=0; i < a.length; i++) {
+	
+						// Don't unload? Skip.
+							if (a[i].dataset.srcUnload === '0')
+								continue;
+	
+						// Mark as unloaded.
+							a[i].dataset.src = a[i].src;
+	
+						// Unload.
+							a[i].src = '';
+	
+					}
+	
+			// Video.
+	
+				// Get list of videos.
+					a = parent.querySelectorAll('video');
+	
+				// Step through list.
+					for (i=0; i < a.length; i++) {
+	
+						// Pause if playing.
+							if (!a[i].paused)
+								a[i].pause();
+	
+					}
+	
+			// Autofocus.
+	
+				// Get focused element.
+					e = $(':focus');
+	
+				// Found? Blur.
+					if (e)
+						e.blur();
+	
+	
 		};
 	
 		// Expose scrollToElement.
@@ -301,6 +416,9 @@
 				}, 1250);
 			}, 100);
 		});
+	
+	// Load elements (if needed).
+		loadElements(document.body);
 	
 	// Browser hacks.
 	
