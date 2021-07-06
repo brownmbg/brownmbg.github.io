@@ -105,6 +105,11 @@ body.is-loading:after {
 	visibility: visible;
 }
 
+:root {
+	--site-language-direction: ltr;
+	--site-language-alignment: left;
+}
+
 html {
 	font-size: 18pt;
 }
@@ -167,7 +172,7 @@ html {
 	border-radius: inherit;
 	padding: 2.875rem 2.25rem;
 	max-width: 100%;
-	width: 25rem;
+	width: 29rem;
 }
 
 #main > .inner > * {
@@ -267,6 +272,10 @@ body.is-instant:after {
 	transition: none !important;
 }
 
+h1, h2, h3, p {
+	direction: var(--site-language-direction);
+}
+
 h1 br + br, h2 br + br, h3 br + br, p br + br {
 	display: block;
 	content: ' ';
@@ -311,7 +320,7 @@ h1 .li, h2 .li, h3 .li, p .li {
 	font-family: 'Source Sans Pro', sans-serif;
 	letter-spacing: 0.225rem;
 	width: calc(100% + 0.225rem);
-	font-size: 0.75em;
+	font-size: 0.625em;
 	line-height: 1.875;
 	font-weight: 200;
 }
@@ -529,7 +538,7 @@ hr:before {
 	#text03 {
 		letter-spacing: 0.196875rem;
 		width: calc(100% + 0.196875rem);
-		font-size: 0.75em;
+		font-size: 0.625em;
 		line-height: 1.875;
 	}
 	
@@ -596,7 +605,7 @@ hr:before {
 	}
 	
 	#text03 {
-		font-size: 0.75em;
+		font-size: 0.625em;
 	}
 	
 	#icons02 {
